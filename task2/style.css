@@ -1,0 +1,50 @@
+
+h1{
+    text-align: center;
+    margin: 0em;
+    padding-top: 1em;
+    padding-bottom: 1em;
+}
+
+.container{
+    width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.row{
+    margin-top: 1.5em;
+}
+
+.form-control{
+    width: 100%;
+}
+
+.btn{
+    width: 15%;
+}
+
+.confirmation table{
+   width: 100%;
+}
+
+.item,
+.content{
+    text-align: center;
+}
+
+.item{
+    width: 20%;
+}
+
+.content{
+    width: 80%;
+}
+
+.item-left{
+    text-align: center;
+}
+
+.confirmation table tr, td{
+    border: 1px solid #808080;
+}
