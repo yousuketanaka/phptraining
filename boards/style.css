@@ -15,6 +15,12 @@ h1{
     margin-right: auto;
 }
 
+p.threadHere{
+    margin-top: 3em;
+    margin-bottom: 2em;
+    font-size: 1.5em;  
+    text-align: left;
+}
 
 .form-horizontal{
     margin-top: 2em;
@@ -36,8 +42,4 @@ textarea{
     margin-top: 1em;
     background-color: #F8F8FF;
     height: 10em;
-}
-
-p.threadHere{
-    text-align: center;
 }

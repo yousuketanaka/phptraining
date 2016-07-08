@@ -26,25 +26,23 @@
           </header>
           <main>
               <div class="container">
-                <h3>スレッドをクリックしてください。</h3>
-                <p>スレッドの作成</p>
                 <p class="threadHere">新しいスレッドを作る時は、こちらでどうぞ。</p>
                 <form action="tweet_insert.php" method="get">
                     <div class="row form-group">
                         <label for="inputName" class="col-sm-2 control-label">名前</label>
                         <div class="col-sm-10">
-                          <input type="text" class="form-control" name="account" placeholder="氏名" required>
+                          <input type="text" class="form-control" name="name" placeholder="氏名" required>
                         </div>
                     </div>
                     <div class="row form-group">
-                        <label for="inputContents" class="col-sm-2 control-label">つぶやき</label>
+                        <label for="inputContents" class="col-sm-2 control-label">コメント</label>
                         <div class="col-sm-10">
-                          <textarea class="form-control" name="contents" rows=5 placeholder="つぶやきはこちらへ"></textarea>
+                          <textarea class="form-control" name="content" rows=5 placeholder="コメントはこちらへ"></textarea>
                         </div>
                     </div>
                     <div class="row form-group">
                       <div class="col-sm-offset-2 col-sm-10">
-                        <input type="submit" class="btn btn-default btn-send" value="ツイート">
+                        <input type="submit" class="btn btn-default btn-send" value="投稿">
                       </div>
                     </div>
                 </form>
@@ -52,12 +50,12 @@
                 <div class="thread-area">
                     <h5>投稿者名</h5>
                     <p>
-                        <?php echo $result['account'];?>
+                        <?php echo $result['name'];?>
                     </p>
                     
                     <h5></h5>
                     <p>
-                        <?php echo $result['contents'];?>
+                        <?php echo $result['comment'];?>
                     </p>
                 </div>
               </div>
