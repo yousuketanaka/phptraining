@@ -52,11 +52,12 @@
                     <p>
                         <?php echo $result['name'];?>
                     </p>
-                    
                     <h5></h5>
                     <p>
                         <?php echo $result['comment'];?>
                     </p>
+                    <p><?php echo "作成時間: " .$date->format("Y-m-d H:i:s") . "\n"; ?></p>
+                    <p><?php echo "最終更新時刻: " . date("Y-m-d H:i:s", getlastmod()); ?></p>
                 </div>
               </div>
           </main>
