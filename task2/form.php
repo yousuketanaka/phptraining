@@ -77,8 +77,8 @@
                     <div class="row form-group">
                       <label for="inputGender" class="col-sm-2 control-label">性別</label>
                       <div class="col-sm-10">
-                          <input type="radio" name="gender" value="男性"　checked>男性
-                          <input type="radio" name="gender" value="女性"　checked>女性
+                          <input type="radio" name="gender" value="1" checked>男性
+                          <input type="radio" name="gender" value="2" checked>女性
                       </div>
                     </div>
                     <div class="row form-group">
