@@ -8,5 +8,5 @@
 
  //DBへの接続・データの選択
    $dbn = "mysql:host=localhost; dbname=bulletin_board_system; charset=utf8";
-   $user = "yousuke";
+   $user = "root";
    $pass = "117117117da";

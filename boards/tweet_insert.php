@@ -11,29 +11,25 @@
    $update_at = getlastmod();
    
    try{
-    header('Content-Type: text/html; charset=UTF-8');//文字化け対策
+    //文字化け対策
+    header('Content-Type: text/html; charset=UTF-8');
+    //DBへの接続
     $dbh = new PDO( $dbn, $user, $pass);
+    //SQL文の準備
     $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     $dbh->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
-    
-    $sql = "INSERT INTO boards(name, comment) VALUES(?, ?);
+    $sql = "INSERT INTO boards(name, comment) VALUES(?, ?)";
     $stmt = $dbh->prepare($sql);
     $stmt->bindValue(1, $name, PDO::PARAM_STR);
     $stmt->bindValue(2, $comment, PDO::PARAM_STR);
+    //SQL文の実行
     $stmt->execute();
+    //SQL文の結果の取り出し
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
- 
+    //DBへの接続を閉じる。
     $dbh = null;
     
-    $length = mb_strlen($comment, 'UTF-8');
-    if ($length == 0){
-        echo 'コメント欄が空白です。';
-    }else if ($length > 500){
-        echo '文字制限を超えています。';
-    }else{
-        header('Location:board_top.php');
-        echo 'コメントの投稿が完了しました。';  
-     }
+    header('Location:board_top.php');
 
    }catch (Exception $e) {
     echo "エラー発生: ". htmlspecialchars($e->getMessage(), ENT_QUOTES, 'UTF-8') . "<br>";

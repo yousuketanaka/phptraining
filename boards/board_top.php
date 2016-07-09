@@ -46,6 +46,8 @@
                       </div>
                     </div>
                 </form>
+                
+                
                 <h4>スレッド一覧</h4>
                 <div class="thread-area">
                     <h5>投稿者名</h5>
@@ -55,8 +57,19 @@
                     
                     <h5></h5>
                     <p>
-                        <?php echo $result['comment'];?>
+                        <?php                    
+                        $length = mb_strlen($comment, 'UTF-8');
+                        if ($length === 0){
+                            echo "コメント欄が空白です。";
+                        }else if ($length > 500){
+                            echo "文字制限を超えています。";
+                        }else{
+                            echo $result['comment'];
+                         }
+                        ?>
                     </p>
+                    <p><?php echo "作成時間: " .$date->format("Y-m-d H:i:s") . "\n"; ?></p>
+ +                  <p><?php echo "最終更新時刻: " . date("Y-m-d H:i:s", getlastmod()); ?></p>
                 </div>
               </div>
           </main>
