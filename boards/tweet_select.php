@@ -1,3 +1,43 @@
+<?php
+   //DBに接続
+   require_once 'db_config.php';
+   
+   $name = $_GET['name'];
+   $comment = $_GET['comment'];
+   $created_at = new DateTime();
+   $created_at = $created_at->format('Y-m-d H:i:s');
+   $updated_at = getlastmod();
+//   $update_at = $update_at->format('Y-m-d H:i:s');
+   
+   $name = htmlspecialchars($name, ENT_QUOTES, 'UTF-8');
+   $comment = htmlspecialchars($comment, ENT_QUOTES, 'UTF-8');
+   
+   try{
+    //文字化け対策
+    header('Content-Type: text/html; charset=UTF-8');
+    //DBへの接続
+    $dbh = new PDO( $dbn, $user, $pass);
+    //SQL文の準備
+    $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $dbh->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+    $sql = "SELECT name, comment, created_at, updated_at FROM boards";
+    $stmt = $dbh->prepare($sql);
+    //SQL文の実行
+    $stmt->execute();
+    //SQL文の結果の取り出し
+    $posts = $stmt->fetch(PDO::FETCH_ASSOC);
+    //DBへの接続を閉じる。
+    $dbh = null;
+    
+//    header('Location:board_top.php');
+
+   }catch (Exception $e) {
+    echo "エラー発生: ". htmlspecialchars($e->getMessage(), ENT_QUOTES, 'UTF-8') . "<br>";
+    die();
+   }
+?>
+
+
 <!DOCTYPE html>
 <html lang="ja">
   <head>
@@ -50,27 +90,25 @@
             </form>
 
 
-            <h2>投稿一覧</h2>
-            <?php 
-              $posts = array_reverse($posts);
-            ?>
+            <h2>投稿一覧 投稿数(<?php count($posts);?>)件</h2>
+            <?php $posts = array_reverse($posts);?>
             <?php if (count($posts)) :?>
                 <?php foreach( $posts as $post) : ?>
                     <div class="row form-group">
                         <label for="inputName" class="col-sm-2 control-label">
                             <?php
-                              $name = ($posts['name'] ==='') ? '名前なし': $posts['name'];
+                              $name = ($post['name'] ==='') ? '名前なし': $post['name'];
                               echo $name;
                             ?>
                         </label>
                         <div class="col-sm-10">
                           <?php
-                             $length = mb_strlen($posts['comment'], 'UTF-8');
+                             $length = mb_strlen($post['comment'], 'UTF-8');
                                 if ($length !== ''){
                                     if ($length >500){
                                         echo '文字制限を超えています。';
                                     }else{
-                                        echo $posts['comment']; 
+                                        echo $post['comment']; 
                                     }
                                 }else{
                                     echo 'コメント欄を入力してください。';
@@ -101,3 +139,6 @@
     <script src="js/bootstrap.min.js"></script>
   </body>
 </html>
+
+
+
