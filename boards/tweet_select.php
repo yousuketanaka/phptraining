@@ -5,9 +5,6 @@
    try{
     //文字化け対策
     header('Content-Type: text/html; charset=UTF-8');
-    $id = (int) $_GET['id'];
-    $name = $_GET['name'];
-    $comment = $_GET['comment'];
     
     //DBへの接続
     $dbh = new PDO( $dbn, $user, $pass);
