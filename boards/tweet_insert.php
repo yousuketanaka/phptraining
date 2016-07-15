@@ -4,10 +4,6 @@
    
    $name = $_GET['name'];
    $comment = $_GET['comment'];
-   $created_at = new DateTime();
-   $created_at = $created_at->format('Y-m-d H:i:s');
-   $updated_at = getlastmod();
-//   $update_at = $update_at->format('Y-m-d H:i:s');
    
    $name = htmlspecialchars($name, ENT_QUOTES, 'UTF-8');
    $comment = htmlspecialchars($comment, ENT_QUOTES, 'UTF-8');
@@ -20,12 +16,10 @@
     //SQL文の準備
     $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     $dbh->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
-    $sql = "INSERT INTO boards(name, comment, created_at, updated_at) VALUES(?,?,?,?)";
+    $sql = "INSERT INTO boards(name, comment) VALUES(?,?)";
     $stmt = $dbh->prepare($sql);
     $stmt->bindValue(1, $name, PDO::PARAM_STR);
     $stmt->bindValue(2, $comment, PDO::PARAM_STR);
-    $stmt->bindValue(3, $created_at, PDO::PARAM_STR);
-    $stmt->bindValue(4, $updated_at, PDO::PARAM_STR);
     //SQL文の実行
     $stmt->execute();
     //SQL文の結果の取り出し

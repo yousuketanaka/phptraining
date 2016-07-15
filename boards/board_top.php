@@ -59,18 +59,18 @@
                     <div class="row form-group">
                         <label for="inputName" class="col-sm-2 control-label">
                             <?php
-                              $name = ($posts['name'] ==='') ? '名前なし': $posts['name'];
+                              $name = ($post['name'] ==='') ? '名前なし': $posts['name'];
                               echo $name;
                             ?>
                         </label>
                         <div class="col-sm-10">
                           <?php
-                             $length = mb_strlen($posts['comment'], 'UTF-8');
+                             $length = mb_strlen($post['comment'], 'UTF-8');
                                 if ($length !== ''){
                                     if ($length >500){
                                         echo '文字制限を超えています。';
                                     }else{
-                                        echo $posts['comment']; 
+                                        echo $post['comment']; 
                                     }
                                 }else{
                                     echo 'コメント欄を入力してください。';
