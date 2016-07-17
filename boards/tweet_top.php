@@ -111,6 +111,7 @@
                                               echo '文字制限を超えています。';
                                           }else{
                                               $thread = $post['comment'];
+                                              $thread = htmlspecialchars($thread, ENT_QUOTES, 'UTF-8');
                                               echo mb_strimwidth($thread, 0, 30, "...","UTF-8");
                                           }
                                       }else{
