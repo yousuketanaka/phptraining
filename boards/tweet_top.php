@@ -98,7 +98,7 @@
                                 <p>
                                 <?php
                                   $name = ($post['name'] ==='') ? '名前なし': $post['name'];
-                                  echo $name;
+                                  echo htmlspecialchars($name, ENT_QUOTES, 'UTF-8');
                                 ?>
                                 </p>
                             </div>
@@ -110,7 +110,8 @@
                                           if ($length >500){
                                               echo '文字制限を超えています。';
                                           }else{
-                                              echo mb_strimwidth($post['comment'], 0, 30, "...","UTF-8");
+                                              $thread = $post['comment'];
+                                              echo mb_strimwidth($thread, 0, 30, "...","UTF-8");
                                           }
                                       }else{
                                           echo 'コメント欄を入力してください。';
