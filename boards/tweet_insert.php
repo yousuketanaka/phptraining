@@ -27,7 +27,7 @@
     //DBへの接続を閉じる。
     $dbh = null;
     
-    header('Location:tweet_top.php');
+    header('Location:tweet_select.php');
 
    }catch (Exception $e) {
     echo "エラー発生: ". htmlspecialchars($e->getMessage(), ENT_QUOTES, 'UTF-8') . "<br>";

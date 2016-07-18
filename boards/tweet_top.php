@@ -1,39 +1,7 @@
 <?php
-   //DBに接続
-   require_once 'db_config.php';
-   
-   try{
-    //文字化け対策
-    header('Content-Type: text/html; charset=UTF-8');
-    
-    //DBへの接続
-    $dbh = new PDO( $dbn, $user, $pass);
-    //SQL文の準備
-    $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $dbh->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
-    $sql = "SELECT name, comment, created_at, updated_at FROM boards";
-    $stmt = $dbh->query($sql);
-//    $stmt = $dbh->prepare($sql);
-    //?の部分に入れる値の準備
-//    $stmt->bindValue(1, $id, PDO::PARAM_INT);
-//    $stmt->bindValue(1, $name, PDO::PARAM_STR);
-//    $stmt->bindValue(2, $comment, PDO::PARAM_STR);
-    //SQL文の実行
-    $stmt->execute();
-    //SQL文の結果の取り出し
-    $posts = $stmt->fetchAll(PDO::FETCH_ASSOC);
-//    $results = htmlspecialchars($results['comment'], ENT_QUOTES, 'UTF-8');
-    //DBへの接続を閉じる。
-    $dbh = null;
-    
-   }catch (Exception $e) {
-    echo "エラー発生: ". htmlspecialchars($e->getMessage(), ENT_QUOTES, 'UTF-8') . "<br>";
-    die();
-   }
+    session_start();
+    exit();
 ?>
-
-
-
 <!DOCTYPE html>
 <html lang="ja">
   <head>
@@ -88,16 +56,21 @@
 
             <h2>投稿一覧</h2>
             <?php 
-              $posts = array_reverse($posts);
+                $tweet = $_SESSION['name'];
+                $tweet .= $_SESSION['comment'];
+                $tweet .= $_SESSION['created_at'];
+                $tweet .= $_SESSION['updated_at'];
+                
+                $tweet = array_reverse($tweet);
             ?>
-            <?php if (count($posts)) :?>
+           
                 <?php foreach( $posts as $post) : ?>
                     <div class="row form-group">
                         <div class="col-sm-12 form-control">
                             <div class="name-display">
                                 <p>
                                 <?php
-                                  $name = ($post['name'] ==='') ? '名前なし': $post['name'];
+                                  $tweet_name = ($tweet['name'] ==='') ? '名前なし': $tweet_name;
                                   echo htmlspecialchars($name, ENT_QUOTES, 'UTF-8');
                                 ?>
                                 </p>
@@ -105,14 +78,16 @@
                             <div class="thread">
                                 <p>
                                 <?php
-                                   $length = mb_strlen($post['comment'], 'UTF-8');
+                                   if (isset($_SESSION['comment'])){
+                                       $post_comment = $_SESSION['comment'];
+                                   }
+                                   $length = mb_strlen($post_comment, 'UTF-8');
                                       if ($length !== ''){
                                           if ($length >500){
                                               echo '文字制限を超えています。';
                                           }else{
-                                              $thread = $post['comment'];
-                                              $thread = htmlspecialchars($thread, ENT_QUOTES, 'UTF-8');
-                                              echo mb_strimwidth($thread, 0, 30, "...","UTF-8");
+                                              $post_comment = htmlspecialchars($post_comment, ENT_QUOTES, 'UTF-8');
+                                              echo mb_strimwidth($post_comment, 0, 40, "...","UTF-8");
                                           }
                                       }else{
                                           echo 'コメント欄を入力してください。';
