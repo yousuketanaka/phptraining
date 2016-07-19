@@ -1,6 +1,35 @@
 <?php
-    session_start();
-    exit();
+   //DBに接続
+   require_once 'db_config.php';
+   
+   try{
+    //文字化け対策
+    header('Content-Type: text/html; charset=UTF-8');
+    
+    //DBへの接続
+    $dbh = new PDO( $dbn, $user, $pass);
+    //SQL文の準備
+    $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $dbh->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+    $sql = "SELECT id, name, comment, created_at, updated_at FROM boards";
+    $stmt = $dbh->query($sql);
+//    $stmt = $dbh->prepare($sql);
+    //?の部分に入れる値の準備
+//    $stmt->bindValue(1, $id, PDO::PARAM_INT);
+//    $stmt->bindValue(1, $name, PDO::PARAM_STR);
+//    $stmt->bindValue(2, $comment, PDO::PARAM_STR);
+    //SQL文の実行
+    $stmt->execute();
+    //SQL文の結果の取り出し
+    $posts = $stmt->fetchAll(PDO::FETCH_ASSOC);
+//    $results = htmlspecialchars($results['comment'], ENT_QUOTES, 'UTF-8');
+    //DBへの接続を閉じる。
+    $dbh = null;
+    
+   }catch (Exception $e) {
+    echo "エラー発生: ". htmlspecialchars($e->getMessage(), ENT_QUOTES, 'UTF-8') . "<br>";
+    die();
+   }
 ?>
 <!DOCTYPE html>
 <html lang="ja">
@@ -55,22 +84,14 @@
 
 
             <h2>投稿一覧</h2>
-            <?php 
-                $tweet = $_SESSION['name'];
-                $tweet .= $_SESSION['comment'];
-                $tweet .= $_SESSION['created_at'];
-                $tweet .= $_SESSION['updated_at'];
-                
-                $tweet = array_reverse($tweet);
-            ?>
-           
+            <?php if ( count($posts)) :?>
                 <?php foreach( $posts as $post) : ?>
                     <div class="row form-group">
                         <div class="col-sm-12 form-control">
                             <div class="name-display">
                                 <p>
                                 <?php
-                                  $tweet_name = ($tweet['name'] ==='') ? '名前なし': $tweet_name;
+                                  $name = ($post['name'] ==='') ? '名前なし': $post['name'];
                                   echo htmlspecialchars($name, ENT_QUOTES, 'UTF-8');
                                 ?>
                                 </p>
@@ -78,16 +99,13 @@
                             <div class="thread">
                                 <p>
                                 <?php
-                                   if (isset($_SESSION['comment'])){
-                                       $post_comment = $_SESSION['comment'];
-                                   }
-                                   $length = mb_strlen($post_comment, 'UTF-8');
+                                   $length = mb_strlen($post['comment'], 'UTF-8');
                                       if ($length !== ''){
                                           if ($length >500){
                                               echo '文字制限を超えています。';
                                           }else{
-                                              $post_comment = htmlspecialchars($post_comment, ENT_QUOTES, 'UTF-8');
-                                              echo mb_strimwidth($post_comment, 0, 40, "...","UTF-8");
+                                              $post['comment'] = htmlspecialchars($post['comment'], ENT_QUOTES, 'UTF-8');
+                                              echo mb_strimwidth($post['comment'], 0, 40, "...","UTF-8");
                                           }
                                       }else{
                                           echo 'コメント欄を入力してください。';
@@ -104,6 +122,15 @@
                                        echo $post['updated_at'];
                                     ?>
                                 </p>
+                                <form action="tweet_update.php" method="post">
+                                    <input type="hidden" name="id" value="<?php echo $post["id"];?>">
+                                    <input type="submit" class="btn btn-success form-control" value="変更">
+                                </form>
+                                <form action="tweet_delete.php" method="post">
+<!--                                    <input type="hidden" name="eventId" value="delete">-->
+                                    <input type="hidden" name="id" value="<?php echo $post["id"];?>">
+                                    <input type="submit" class="btn btn-success form-control" value="削除">
+                                </form>
                             </div>
                         </div>
                     </div>

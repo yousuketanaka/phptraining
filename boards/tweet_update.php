@@ -9,7 +9,7 @@
     $dbh = new PDO( $dbn, $user, $pass);
     $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     $dbh->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
-    $sql = "delete from boards where id = ?";
+    $sql = "update boards set comment = '' where id = ?;";
 //    $stmt = $dbh->query($sql);
     $stmt = $dbh->prepare($sql);
     $stmt->bindValue(1,$id, PDO::PARAM_INT);
