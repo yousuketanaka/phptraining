@@ -2,27 +2,154 @@
    //DBに接続
    require_once 'db_config.php';
    
+//   $id = (int) $_POST['id'];
+//   $name = $_POST['name'];
+//   $comment = $_POST['comment'];
+//   $updated_at = $_POST['updated_at'];
+   
    try{
-    header('Content-Type: text/html; charset=UTF-8');//文字化け対策
+    //文字化け対策
+    header('Content-Type: text/html; charset=UTF-8');
     if (empty($_POST['id'])) throw new Exception('Error');
     $id = (int) $_POST['id'];
+    //DBへの接続
     $dbh = new PDO( $dbn, $user, $pass);
+    //SQL文の準備
     $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     $dbh->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
-    $sql = "update boards set comment = '' where id = ?;";
+    $sql = "UPDATE boards SET name=?, comment=? where id=?";
 //    $stmt = $dbh->query($sql);
     $stmt = $dbh->prepare($sql);
-    $stmt->bindValue(1,$id, PDO::PARAM_INT);
+    //?の部分に入れる値の準備
+    $stmt->bindValue(1, $name, PDO::PARAM_INT);
+    $stmt->bindValue(2, $comment, PDO::PARAM_INT);
+    $stmt->bindValue(3, $id, PDO::PARAM_INT);
+//    $stmt->bindValue(1, $name, PDO::PARAM_STR);
+//    $stmt->bindValue(2, $comment, PDO::PARAM_STR);
+    //SQL文の実行
     $stmt->execute();
- 
+    //SQL文の結果の取り出し
+    $post = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        
+    echo('<pre>');
+        var_dump($columns);
+    echo('</pre>');
+//    $results = htmlspecialchars($results['comment'], ENT_QUOTES, 'UTF-8');
+    //DBへの接続を閉じる。
     $dbh = null;
     
-    header('Location:tweet_top.php');
-    
-//    echo "ID: " .htmlspecialchars( $id, ENT_QUOTES, 'UTF-8' ) . "の削除が完了しました。";
-    
+    header('Location:tweet_update.php');
+
    }catch (Exception $e) {
     echo "エラー発生: ". htmlspecialchars($e->getMessage(), ENT_QUOTES, 'UTF-8') . "<br>";
     die();
    }
 ?>
+
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>掲示板|トップ画面</title>
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+      <header>
+          <div class="container">
+              <h1>掲示板</h1>
+          </div>
+      </header>
+      <main>
+        <div class="container">
+            <h2 class="threadHere">スレッドの更新</h2>
+            <form action="tweet_update.php" method="get">
+                <div class="row form-group">
+                    <label for="inputName" class="col-sm-2 control-label">投稿者</label>
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control" name="name" value="<?php echo $post['name'];?>" required>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <label for="inputContents" class="col-sm-2 control-label">スレッド名</label>
+                    <div class="col-sm-10">
+                      <textarea class="form-control" name="comment" rows=3></textarea>
+                    </div>
+<!--                        <input type="hidden" name="posttime">
+                    <input type="hidden" name="updatetime">-->
+                </div>
+                <div class="row form-group">
+                  <div class="col-sm-offset-2 col-sm-10">
+                    <input type="submit" class="btn btn-default btn-send" value="投稿">
+                  </div>
+                </div>
+            </form>
+            
+            <h2>投稿一覧</h2>
+            <?php if ( count($posts)) :?>
+                <?php foreach( $posts as $post) : ?>
+                    <div class="row form-group">
+                        <div class="col-sm-12 form-control">
+                            <div class="name-display">
+                                <p>
+                                <?php
+                                  $name = ($post['name'] ==='') ? '名前なし': $post['name'];
+                                  echo htmlspecialchars($name, ENT_QUOTES, 'UTF-8');
+                                ?>
+                                </p>
+                            </div>
+                            <div class="thread">
+                                <p>
+                                <?php
+                                   $length = mb_strlen($post['comment'], 'UTF-8');
+                                      if ($length !== ''){
+                                          if ($length >500){
+                                              echo '文字制限を超えています。';
+                                          }else{
+                                              $post['comment'] = htmlspecialchars($post['comment'], ENT_QUOTES, 'UTF-8');
+                                              echo mb_strimwidth($post['comment'], 0, 40, "...","UTF-8");
+                                          }
+                                      }else{
+                                          echo 'コメント欄を入力してください。';
+                                      }
+                                ;?>
+                                </p>
+                                <p class="create_time">投稿時:
+                                <?php
+                                   echo $post['created_at'];
+                                ?>
+                                </p>
+                                <p class="update_time">更新時:
+                                    <?php
+                                       echo $post['updated_at'];
+                                    ?>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                <?php endforeach ;?>
+            <?php else : ?>
+                   <p>投稿はありません。</p>
+            <?php endif; ?>
+        </div> <!--end of container-->
+      </main>
+      <footer></footer>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+  </body>
+</html>

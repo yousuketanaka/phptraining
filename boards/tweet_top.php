@@ -26,6 +26,13 @@
     //DBへの接続を閉じる。
     $dbh = null;
     
+//    $id = $posts['id'];
+//    $name = $posts['name'];
+//    $comment = $posts['comment'];
+//    $created_at = $posts['created_at'];
+//    $updated_at = $posts['updated_at'];
+    
+    
    }catch (Exception $e) {
     echo "エラー発生: ". htmlspecialchars($e->getMessage(), ENT_QUOTES, 'UTF-8') . "<br>";
     die();
@@ -60,7 +67,7 @@
       <main>
         <div class="container">
             <h2 class="threadHere">新規スレッド作成</h2>
-            <form action="tweet_insert.php" method="get">
+            <form action="tweet_insert.php" method="post">
                 <div class="row form-group">
                     <label for="inputName" class="col-sm-2 control-label">投稿者</label>
                     <div class="col-sm-10">
@@ -104,8 +111,8 @@
                                           if ($length >500){
                                               echo '文字制限を超えています。';
                                           }else{
-                                              $post['comment'] = htmlspecialchars($post['comment'], ENT_QUOTES, 'UTF-8');
-                                              echo mb_strimwidth($post['comment'], 0, 40, "...","UTF-8");
+                                              $comment = htmlspecialchars($post['comment'], ENT_QUOTES, 'UTF-8');
+                                              echo mb_strimwidth($comment, 0, 40, "...","UTF-8");
                                           }
                                       }else{
                                           echo 'コメント欄を入力してください。';
@@ -122,8 +129,11 @@
                                        echo $post['updated_at'];
                                     ?>
                                 </p>
-                                <form action="tweet_update.php" method="post">
-                                    <input type="hidden" name="id" value="<?php echo $post["id"];?>">
+                                <form action="tweet_edit.php" method="post">
+                                    <input type="hidden" name="id" value="<?php echo $post['id'];?>">
+                                    <input type="hidden" name="name" value="<?php echo $name;?>">
+                                    <input type="hidden" name="comment" value="<?php echo $comment;?>">
+                                    <input type="hidden" name="updated_at" value="<?php echo $updated_at;?>">
                                     <input type="submit" class="btn btn-success form-control" value="変更">
                                 </form>
                                 <form action="tweet_delete.php" method="post">
