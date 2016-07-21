@@ -131,9 +131,9 @@
                                 </p>
                                 <form action="tweet_edit.php" method="post">
                                     <input type="hidden" name="id" value="<?php echo $post['id'];?>">
-                                    <input type="hidden" name="name" value="<?php echo $name;?>">
-                                    <input type="hidden" name="comment" value="<?php echo $comment;?>">
-                                    <input type="hidden" name="updated_at" value="<?php echo $updated_at;?>">
+<!--                                    <input type="hidden" name="name" value="<?php echo $post['name'];?>">
+                                    <input type="hidden" name="comment" value="<?php echo $post['comment'];?>">
+                                    <input type="hidden" name="updated_at" value="<?php echo $post['updated_at'];?>">-->
                                     <input type="submit" class="btn btn-success form-control" value="変更">
                                 </form>
                                 <form action="tweet_delete.php" method="post">
