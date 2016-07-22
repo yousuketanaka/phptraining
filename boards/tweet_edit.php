@@ -4,9 +4,9 @@
    require_once 'db_config.php';
    
    $id = (int) $_POST['id'];
-//   $name = $_POST['name'];
-//   $comment = $_POST['comment'];
-//   $updated_at = $_POST['updated_at'];
+   $name = $_POST['name'];
+   $comment = $_POST['comment'];
+   $updated_at = $_POST['updated_at'];
    
    try{
     //文字化け対策
@@ -29,17 +29,10 @@
     $stmt->execute();
     //SQL文の結果の取り出し
     $post = $stmt->fetch(PDO::FETCH_ASSOC);
-    
-    $post_id = $post['id'];
-    $post_name = $post['name'];
-    $post_comment = $post['comment'];
-    $post_updated_at = $post['updated_at'];
 
 //    $results = htmlspecialchars($results['comment'], ENT_QUOTES, 'UTF-8');
     //DBへの接続を閉じる。
     $dbh = null;
-    
-
     
 //    $post_id = $post['id'];
 //    $post_name = $post['name'];
@@ -84,30 +77,30 @@
       <main>
         <div class="container">
             <h2 class="threadHere">スレッドの更新</h2>
-            <form action="tweet_edit_check.php" method="post">
+            <form action="tweet_update.php" method="post">
                 <div class="row form-group">
                     <label for="inputName" class="col-sm-2 control-label">投稿者</label>
                     <div class="col-sm-10">
-                      <input type="text" class="form-control" name="post_name" value="<?php echo $post_name;?>" required>
+                      <input type="text" class="form-control" name="name" value="<?php echo var_dump($post['name']);?>" required>
                     </div>
                 </div>
                 <div class="row form-group">
                     <label for="inputContents" class="col-sm-2 control-label">スレッド名</label>
                     <div class="col-sm-10">
-                      <textarea class="form-control" name="post_comment" rows=3><?php echo $post_comment;?></textarea>
+                      <textarea class="form-control" name="comment" rows=3><?php echo var_dump($post['comment']);?></textarea>
                     </div>
                     <p class="update_tim">更新時:
                         <?php
-                           echo $post_updated_at;
+                           echo $post['updated_at'];
                         ?>
                     </p>
-<!--                        <input type="hidden" name="posttime">
-                    <input type="hidden" name="updatetime">-->
+
                 </div>
                 <div class="row form-group">
                   <div class="col-sm-offset-2 col-sm-10">
-                      <input type="hidden" name="id">
-                    <input type="submit" class="btn_2 btn-default form-control btn-send" value="スレッドを修正する">
+                    <input type="hidden" name="id" value="<?php echo $post['id'];?>">
+                    <input type="hidden" name="updated_at" value="<?php echo $post['updated_at'];?>">
+                    <input type="submit" class="btn_2 btn-default form-control btn-send" value="スレッドの修正">
                   </div>
                 </div>
             </form>
