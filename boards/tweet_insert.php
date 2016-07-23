@@ -1,4 +1,5 @@
 <?php
+   header('Location:tweet_select.php');
    //DBに接続
    require_once 'db_config.php';
    
@@ -23,11 +24,10 @@
     //SQL文の実行
     $stmt->execute();
     //SQL文の結果の取り出し
-    $result = $stmt->fetch(PDO::FETCH_ASSOC);
-    //DBへの接続を閉じる。
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);   //1行づつ取得。fetchAllは全データを配列に変換
+    //DBへの接続を閉じる。今の時点でデータがDBに格納されている。
     $dbh = null;
-    
-    header('Location:tweet_top.php');
+
 
    }catch (Exception $e) {
     echo "エラー発生: ". htmlspecialchars($e->getMessage(), ENT_QUOTES, 'UTF-8') . "<br>";
