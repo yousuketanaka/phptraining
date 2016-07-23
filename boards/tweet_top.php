@@ -92,6 +92,9 @@
 
 
             <h2>投稿一覧</h2>
+            <?php
+            $posts = array_reverse($posts);
+            ?>
             <?php if ( count($posts)) :?>
                 <?php foreach( $posts as $post) : ?>
                     <div class="row form-group">

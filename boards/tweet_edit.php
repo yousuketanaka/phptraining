@@ -1,5 +1,4 @@
 <?php
-//   header('Location:tweet_update.php');
    //DBに接続
    require_once 'db_config.php';
    
@@ -81,25 +80,23 @@
                 <div class="row form-group">
                     <label for="inputName" class="col-sm-2 control-label">投稿者</label>
                     <div class="col-sm-10">
-                      <input type="text" class="form-control" name="name" value="<?php echo var_dump($post['name']);?>" required>
+                      <input type="text" class="form-control" name="name" value="<?php echo $post['name'];?>" required>
                     </div>
                 </div>
                 <div class="row form-group">
                     <label for="inputContents" class="col-sm-2 control-label">スレッド名</label>
                     <div class="col-sm-10">
-                      <textarea class="form-control" name="comment" rows=3><?php echo var_dump($post['comment']);?></textarea>
+                      <textarea class="form-control" name="comment" rows=3 value="<?php echo $post['comment'];?>"><?php echo $post['comment'];?></textarea>
                     </div>
                     <p class="update_tim">更新時:
                         <?php
                            echo $post['updated_at'];
                         ?>
                     </p>
-
                 </div>
                 <div class="row form-group">
                   <div class="col-sm-offset-2 col-sm-10">
                     <input type="hidden" name="id" value="<?php echo $post['id'];?>">
-                    <input type="hidden" name="updated_at" value="<?php echo $post['updated_at'];?>">
                     <input type="submit" class="btn_2 btn-default form-control btn-send" value="スレッドの修正">
                   </div>
                 </div>
