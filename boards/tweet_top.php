@@ -48,11 +48,11 @@
                   </div>
                 </div>
             </form>
-
-
+            
             <h2>投稿一覧</h2>
             <?php
-                require_once('./tweet_select.php');
+                include 'tweet_select.php';
+                
                 $posts = array_reverse($posts);
             ?>
             <?php if ( count($posts)) :?>
@@ -101,7 +101,7 @@
                                     <input type="submit" class="btn btn-success form-control" value="変更">
                                 </form>
                                 <form action="tweet_delete.php" method="post">
-<!--                                    <input type="hidden" name="eventId" value="delete">-->
+            <!--                                    <input type="hidden" name="eventId" value="delete">-->
                                     <input type="hidden" name="id" value="<?php echo $post["id"];?>">
                                     <input type="submit" class="btn btn-success form-control" value="削除">
                                 </form>
@@ -112,12 +112,12 @@
             <?php else : ?>
                    <p>投稿はありません。</p>
             <?php endif; ?>
-        </div> <!--end of container-->
-      </main>
-      <footer></footer>
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="js/bootstrap.min.js"></script>
-  </body>
-</html>
+                    </div> <!--end of container-->
+                  </main>
+                  <footer></footer>
+                <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+                <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+                <!-- Include all compiled plugins (below), or include individual files as needed -->
+                <script src="js/bootstrap.min.js"></script>
+              </body>
+            </html>

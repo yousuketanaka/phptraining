@@ -1,5 +1,5 @@
 <?php
-//    header('Location:tweet_top.php');
+    header('Location:tweet_top.php');
    //DBに接続
    require_once 'db_config.php';
    
@@ -27,14 +27,9 @@
     //DBへの接続を閉じる。
     $dbh = null;
     
-    echo('<pre>');
-        var_dump($posts);
-    echo('</pre>');
 
-    
    }catch (Exception $e) {
     echo "エラー発生: ". htmlspecialchars($e->getMessage(), ENT_QUOTES, 'UTF-8') . "<br>";
     die();
    }
 ?>
-
