@@ -83,6 +83,8 @@
                                       }
                                 ;?>
                                 </p>
+                            </div>
+                            <div class="post-time">
                                 <p class="create_time">投稿時:
                                 <?php
                                    echo $post['created_at'];
@@ -93,17 +95,20 @@
                                        echo $post['updated_at'];
                                     ?>
                                 </p>
-                                <form action="tweet_edit.php" method="post">
-                                    <input type="hidden" name="id" value="<?php echo $post['id'];?>">
-                                    <input type="hidden" name="name" value="<?php echo $post['name'];?>">
-                                    <input type="hidden" name="comment" value="<?php echo $post['comment'];?>">
-                                    <input type="hidden" name="updated_at" value="<?php echo $post['updated_at'];?>">
-                                    <input type="submit" class="btn btn-success form-control" value="変更">
-                                </form>
+                            </div>
+                            <div class="transfer-btn">
                                 <form action="tweet_delete.php" method="post">
             <!--                                    <input type="hidden" name="eventId" value="delete">-->
                                     <input type="hidden" name="id" value="<?php echo $post["id"];?>">
                                     <input type="submit" class="btn btn-success form-control" value="削除">
+                                </form>
+                                <form action="tweet_edit.php" method="post">
+                                    <input type="hidden" name="id" value="<?php echo $post['id'];?>">
+                                    <input type="submit" class="btn btn-success form-control" value="変更">
+                                </form>
+                                <form action="post_topics.php" method="post">
+                                    <input type="hidden" name="id" value="<?php echo $post['id'];?>">
+                                    <input type="submit" class="btn btn-info form-control" value="詳細">
                                 </form>
                             </div>
                         </div>
